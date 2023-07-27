@@ -10,6 +10,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private LevelData[] levelDataObjects;
     private Level currentLevel;
     public Level CurrentLevel => currentLevel;
+    private int currentLevelIndex;
 
     private void Start()
     {
@@ -21,7 +22,33 @@ public class LevelManager : MonoBehaviour
 
         Debug.Log("Levels: " + levels);
         currentLevel = levels[0];
+        currentLevelIndex = 0;
         Debug.Log("CurrentLevel: " + currentLevel);
         GameManager.Instance.DotGrid.InitializeGrid(currentLevel.GetNoDotRows());
+
+        currentLevel.NextState();
+    }
+
+    private void Update()
+    {
+        StartCoroutine(currentLevel.HandleState());
+    }
+
+    public void NextLevel()
+    {
+        if (currentLevelIndex + 1 > levels.Length - 1)
+        {
+            //GAME OVER
+        }
+        else
+        {
+            currentLevelIndex++;
+            Debug.Log("CurrentLevelIndex: " + currentLevelIndex);
+            currentLevel = levels[currentLevelIndex];
+            GameManager.Instance.DotGrid.DeleteGrid();
+            GameManager.Instance.DotGrid.InitializeGrid(currentLevel.GetNoDotRows());
+
+            currentLevel.NextState();
+        }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,8 @@ public class Dot : MonoBehaviour
     private DotColor currentDotColor = DotColor.UNCOLORED;
     public DotColor CurrentDotColor => currentDotColor;
 
+    public event Action OnDotClicked;
+
     private int id;
     public int ID
     {  
@@ -19,16 +22,21 @@ public class Dot : MonoBehaviour
     private void Awake()
     {
         dotImage = GetComponent<Image>();
+        OnDotClicked += transform.parent.GetComponent<DotGrid>().UpdateDotColors;
     }
 
     public void SetDotColor(Color _color) => dotImage.color = _color;
 
-    private void OnMouseDown()
+    public void NextColor()
     {
-        Debug.Log("CLICKED ON DOT " + id);
-        // Go to next DotColor
-    }
+        if (currentDotColor == DotColor.COLOR_THREE)
+            currentDotColor = DotColor.UNCOLORED;
+        else
+            currentDotColor++;
 
+        //TODO change this into an observer pattern
+        OnDotClicked?.Invoke();
+    }
 }
 
 public enum DotColor
