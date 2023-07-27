@@ -5,24 +5,36 @@ using UnityEngine.UI;
 
 public class Dot : MonoBehaviour
 {
-    private int ID;
     private Image dotImage;
-    private Color white = Color.white;
-    private Color black = Color.black;
-    private Color blue = Color.blue;
-    private Color red = Color.red;
-    private Color green = Color.green;
+    private DotColor currentDotColor = DotColor.UNCOLORED;
+    public DotColor CurrentDotColor => currentDotColor;
 
-    private void Start()
+    private int id;
+    public int ID
+    {  
+        get { return id; } 
+        set { id = value; }
+    }
+
+    private void Awake()
     {
         dotImage = GetComponent<Image>();
-        dotImage.color = white;
     }
 
-    private void Update()
+    public void SetDotColor(Color _color) => dotImage.color = _color;
+
+    private void OnMouseDown()
     {
-        
+        Debug.Log("CLICKED ON DOT " + id);
+        // Go to next DotColor
     }
 
-    public void SetID(int _value) => ID = _value;
 }
+
+public enum DotColor
+{ 
+    UNCOLORED,
+    COLOR_ONE,
+    COLOR_TWO,
+    COLOR_THREE
+};

@@ -6,21 +6,24 @@ using UnityEngine.UI;
 public class DotGrid : MonoBehaviour
 {
     [SerializeField] private GameObject dotObject;
-    [SerializeField] private int amountOfDotRows = 3;
-    private int amountOfDots;
+    private int noDotRows;
+    private int noDots;
 
-    public Dot[] dots;
+    private Dot[] dots;
+    public Dot[] Dots => dots;
 
-    private void Awake()
-    {
-        amountOfDots = amountOfDotRows * amountOfDotRows;
-        dots = new Dot[amountOfDots];
-        GetComponent<GridLayoutGroup>().constraintCount = amountOfDotRows;
+    public void InitializeGrid(int _noDotRows)
+    { 
+        noDotRows = _noDotRows;
+        noDots = noDotRows * noDotRows;
+        dots = new Dot[noDots];
+        GetComponent<GridLayoutGroup>().constraintCount = noDotRows;
 
-        for (int i = 0; i < amountOfDots; i++)
+        for (int i = 0; i < noDots; i++)
         {
             dots[i] = Instantiate(dotObject, this.transform).GetComponent<Dot>();
-            dots[i].SetID(i);
+            dots[i].ID = i;
+            dots[i].SetDotColor(GameManager.Instance.LevelManager.CurrentLevel.GetDotColor(dots[i].CurrentDotColor));
         }
     }
 }

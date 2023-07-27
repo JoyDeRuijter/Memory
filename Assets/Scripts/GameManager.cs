@@ -4,15 +4,28 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    #region Singleton
+    private static GameManager instance;
+    public static GameManager Instance
     {
-        
+        get
+        {
+            if (instance == null)
+                Debug.LogError("GameManager is NULL");
+            return instance;
+        }
+    }
+    #endregion
+
+    [SerializeField] private DotGrid dotGrid;
+    public DotGrid DotGrid => dotGrid;
+    private LevelManager levelManager;
+    public LevelManager LevelManager => levelManager;
+
+    private void Awake()
+    {
+        instance = this;
+        levelManager = this.gameObject.GetComponent<LevelManager>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
