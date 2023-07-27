@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
     {
         instance = this;
         levelManager = this.gameObject.GetComponent<LevelManager>();
+        //HOIOIIIOI
     }
 
 }
